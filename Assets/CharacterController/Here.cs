@@ -1,0 +1,306 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Events;
+
+
+
+public class Here : MonoBehaviour
+{
+    //separate rotation from movement
+    private Transform aimTarget;
+    
+    //Setup Prefab
+    public GameObject BaseBullet;
+
+    //Where the bullet is firing from
+    public Transform GunTip;
+
+    //events
+    public UnityEvent SwitchMoveMode;
+    public UnityEvent DefaultCursor;
+    public UnityEvent CombatCursor;
+    public UnityEvent FireGun;
+    public UnityEvent Reset;
+
+    //movespeed
+    private float moveSpeedmode1 = 7;
+    private float moveSpeedmode2 = 15;
+
+    public Animator Animatorinfo;
+
+    //GunInfo
+    public GameObject Gun;
+
+    //Gravity
+    private float gravity = 0;
+    private float groundedGravity = 0;
+    public float cooldownTimer;
+    private Vector3 moveDir;
+    bool equipped;
+
+    //Move2 variables
+    private float smoothtime = 0.05f;
+    private float currentVelocity;
+
+    //character controller setup
+    private CharacterController controller;
+    private Vector3 velocity;
+
+    //ResetDirectionForSwitch
+    public Vector3 ResetAnim = new Vector3(0, 52, 0);
+
+
+
+    void Start()
+    {
+        //Animatorpart = Animatorinfo 
+
+        //establish first move mode
+        equipped = true;
+
+
+        //reset gun cooldown
+        cooldownTimer = 0;
+
+        Input.ResetInputAxes();
+
+        controller = GetComponent<CharacterController>();
+
+        //rotation stuff
+        aimTarget = transform.Find("Aimer");
+
+
+        //check existence of AimTarget
+        if (aimTarget == null)
+            Debug.LogWarning("Aimer child not found!");
+
+        Gun.GetComponent<Renderer>().enabled = true;
+
+    }
+
+    void Update()
+    {
+        //RunCoolDownTimer
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer = cooldownTimer - 1f;
+        }
+
+        bool isGrounded = controller.isGrounded;
+
+        //Movement Equipped 1
+        if (equipped)
+        {
+
+            if (isGrounded && velocity.y < 0)
+            {
+                velocity.y = groundedGravity;
+            }
+
+
+            //Lmb To shoot function to activate once equipped its active
+            if (cooldownTimer < 1)
+            {
+                // Input
+                float x = Input.GetAxisRaw("Horizontal");
+                
+
+                //W key only works if magnitude between mouse and player reaches certain minimum
+                float z = Input.GetAxisRaw("Vertical"); ;
+       
+
+                if (x == 0 && z == 0)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+
+                        print("mouseWorking");
+                        FireGun.Invoke();
+                        ShootBullet();
+                        cooldownTimer = 300;
+
+                    }
+                }
+            }
+
+
+
+            //Rotation: rotate aimer toward mouse
+            if (aimTarget != null)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+                {
+                    Vector3 lookPoint = hit.point;
+                    lookPoint.y = aimTarget.position.y;
+
+                    Vector3 direction = lookPoint - aimTarget.position;
+
+                    if (direction.sqrMagnitude > 0.01f)
+                    {
+                        Quaternion lookRotation = Quaternion.LookRotation(direction);
+                        aimTarget.rotation = Quaternion.Slerp(aimTarget.rotation, lookRotation, 10f * Time.deltaTime);
+                    }
+
+
+
+                    //Movement relative to mouse
+                    Vector3 toMouse = (lookPoint - transform.position).normalized;
+                    toMouse.y = 0f;
+                    Vector3 rightDir = Vector3.Cross(Vector3.up, toMouse);
+
+
+                    //its important to not normalize distance to mouse detection
+                    float distanceToMouse = (lookPoint - transform.position).magnitude;
+
+                    //bugfix
+                    print("Distance to mouse: " + distanceToMouse);
+
+                    //AutoExit Mode if player places cursor ontop of avatar
+                    if (distanceToMouse < 3f)
+                    {
+                        equipped = false;
+                        SwitchMoveMode.Invoke();
+                        DefaultCursor.Invoke();
+
+                    }
+
+                    // Input
+                    float x = 0;
+                    if (Input.GetKey(KeyCode.A)) x = -1;
+                    if (Input.GetKey(KeyCode.D)) x = 1;
+
+                    //W key only works if magnitude between mouse and player reaches certain minimum
+                    float z = 0;
+                    if (Input.GetKey(KeyCode.W)) z = 1;
+                    if (Input.GetKey(KeyCode.S)) z = -1;
+
+                    // Movement direction relative to mouse position
+                    Vector3 moveDir = (toMouse * z + rightDir * x);
+
+                    if (moveDir.magnitude > 1f)
+                        moveDir = moveDir.normalized;
+
+                    controller.Move(moveDir * moveSpeedmode1 * Time.deltaTime);
+                }
+
+            }
+
+            // Apply gravity separately
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
+
+
+        //Swap To MovementMode 2
+        if (!equipped)
+        {
+            print("mode2!!");
+
+
+            if (isGrounded && velocity.y < 0)
+            {
+                // Keep character pinned to the ground without sliding
+                velocity.y = groundedGravity;
+            }
+
+
+            //Input Detection
+            float x = 0;
+            if (Input.GetKey(KeyCode.A)) x = -1;
+            if (Input.GetKey(KeyCode.D)) x = 1;
+
+            float z = 0;
+            if (Input.GetKey(KeyCode.W)) z = 1;
+            if (Input.GetKey(KeyCode.S)) z = -1;
+
+
+
+            //calculate direction
+            Vector3 moveDir = new Vector3(x, 0, z);
+            moveDir.Normalize();
+
+
+
+
+            if (!equipped && moveDir != Vector3.zero)
+            {
+                //calculate angle
+                float targetAngle = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
+
+                // Snap to nearest 45 instead of 90
+                float snappedAngle = Mathf.Round(targetAngle / 45f) * 45f;
+
+                // Create target rotation
+                Quaternion targetRotation = Quaternion.Euler(0f, snappedAngle, 0f);
+
+                // Smoothly rotate toward the snapped direction
+                aimTarget.rotation = Quaternion.RotateTowards(aimTarget.rotation, targetRotation, 360f * Time.deltaTime);
+
+            }
+
+
+            //process movement calculations
+            controller.Move(moveDir * moveSpeedmode2 * Time.deltaTime);
+
+
+        }
+
+
+        //Toggle Between Movement Modes
+        if ((Input.GetKeyDown(KeyCode.E)))
+        {
+
+            if (equipped)
+            {
+                equipped = false;
+                DefaultCursor.Invoke();
+                print("Switched to Mode 2, using LookAt on Aimer!");
+                Gun.GetComponent<Renderer>().enabled = false;
+            }
+
+            else if (!equipped)
+            {
+                
+                equipped = true;
+                CombatCursor.Invoke();
+                Gun.GetComponent<Renderer>().enabled = true;
+            }
+
+        }
+    }
+
+    public void ShootBullet()
+    {
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            Vector3 lookPoint = hit.point;
+            lookPoint.y = aimTarget.position.y;
+
+            Vector3 pos = transform.position;
+
+            Vector3 bulletRotation = lookPoint - pos;
+            Quaternion targetRotation = Quaternion.LookRotation(bulletRotation);
+
+
+            Vector3 BulletPos = GunTip.position;
+            Instantiate(BaseBullet, BulletPos, targetRotation);
+            Bullet scriptOnBullet = BaseBullet.GetComponent<Bullet>();
+            scriptOnBullet.BulletDirection = lookPoint;
+
+        }
+
+    }
+}
+
+
+        
+
+
+
+
