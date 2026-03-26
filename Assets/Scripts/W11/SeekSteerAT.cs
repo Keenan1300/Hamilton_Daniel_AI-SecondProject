@@ -10,13 +10,15 @@ namespace NodeCanvas.Tasks.Actions {
 
 		public BBParameter<Vector3> targetposition;
 		public Transform TargetTransform;
-
+		private Blackboard PosBoard;
 		
         
 		//Use for initialization. This is called only once in the lifetime of the task.
         //Return null if init was successfull. Return an error string otherwise
         protected override string OnInit() {
-			return null;
+            PosBoard = agent.GetComponent<Blackboard>();
+
+            return null;
 		}
 
 		//This is called once each time the task is enabled.
@@ -29,9 +31,11 @@ namespace NodeCanvas.Tasks.Actions {
 		//Called once per frame while the action is active.
 		protected override void OnUpdate()
 		{
+            
             targetposition.value = TargetTransform.position;
-			
-		}
+            PosBoard.SetVariableValue("TargetPosition", targetposition.value);
+
+        }
 
 		//Called when the task is disabled.
 		protected override void OnStop() {

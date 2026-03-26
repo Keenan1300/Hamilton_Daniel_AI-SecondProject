@@ -665,8 +665,8 @@ MonoBehaviour:
     _version: 3.33
     _category: 
     _comments: 
-    _translation: {x: 227, y: 17}
-    _zoomFactor: 1
+    _translation: {x: 321.81747, y: 83.11033}
+    _zoomFactor: 0.9589054
   _firstActivation: 0
   _enableAction: 0
   _disableAction: 0
@@ -721,7 +721,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 0f99cb11d417c124fb2eee6132ef3d63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

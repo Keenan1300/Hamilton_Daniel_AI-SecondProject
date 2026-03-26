@@ -10,6 +10,7 @@ namespace NodeCanvas.Tasks.Conditions
 
         public Transform targetTransform;
         public float rangeDistance;
+       
 
 
         //Use for initialization. This is called only once in the lifetime of the task.
