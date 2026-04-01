@@ -11,9 +11,10 @@ namespace NodeCanvas.Tasks.Actions {
 		public BBParameter<Vector3> targetposition;
 		public Transform TargetTransform;
 		private Blackboard PosBoard;
-		
-        
-		//Use for initialization. This is called only once in the lifetime of the task.
+		public BBParameter<Vector3> movedirection;
+        public float strength;
+
+        //Use for initialization. This is called only once in the lifetime of the task.
         //Return null if init was successfull. Return an error string otherwise
         protected override string OnInit() {
             PosBoard = agent.GetComponent<Blackboard>();
@@ -32,7 +33,7 @@ namespace NodeCanvas.Tasks.Actions {
 		protected override void OnUpdate()
 		{
             
-            targetposition.value = TargetTransform.position;
+            movedirection.value += (TargetTransform.position - agent.transform.position).normalized * strength;
             PosBoard.SetVariableValue("TargetPosition", targetposition.value);
 
         }

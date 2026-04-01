@@ -1,17 +1,16 @@
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
 using UnityEngine;
-using UnityEngine.EventSystems;
-
 
 namespace NodeCanvas.Tasks.Actions {
 
-	public class MoveAT : ActionTask {
-
-		public BBParameter<Vector3> TargetPosition;
-		public BBParameter<float> MoveSpeed;
-		public float StoppingDistance;
+	public class AvoidSteerAT : ActionTask {
+        
+		public BBParameter<Vector3> targetposition;
+		public LayerMask avoidmask;
+		public float detectiondistance;
         public BBParameter<Vector3> movedirection;
+		public float strength;
 
         //Use for initialization. This is called only once in the lifetime of the task.
         //Return null if init was successfull. Return an error string otherwise
@@ -23,26 +22,24 @@ namespace NodeCanvas.Tasks.Actions {
 		//Call EndAction() to mark the action as finished, either in success or failure.
 		//EndAction can be called from anywhere.
 		protected override void OnExecute() {
-			
+			EndAction(true);
 		}
 
 		//Called once per frame while the action is active.
 		protected override void OnUpdate() {
+			Collider[] detectedColliders = Physics.OverlapSphere(agent.transform.position, detectiondistance, avoidmask);
 
+			Vector3 totaldirection = Vector3.zero;
 
-
-            Vector3 directionToMove = TargetPosition.value - agent.transform.position;
-           
-
-            float distancetoTarget = Vector3.Distance(agent.transform.position, TargetPosition.value);
-			if(distancetoTarget < StoppingDistance)
+			foreach (Collider detectedcollider in detectedColliders)
 			{
-                directionToMove = new Vector3(directionToMove.x, 0f, directionToMove.z);
-                agent.transform.position += directionToMove.normalized * MoveSpeed.value * Time.deltaTime;
-                movedirection.value = Vector3.zero;
-
-            }
-        }
+				Vector3 directiontoHazard = detectedcollider.transform.position - agent.transform.position;
+                totaldirection -= directiontoHazard;
+			}
+			
+			totaldirection = totaldirection.normalized;
+			targetposition.value += totaldirection * strength;
+		}
 
 		//Called when the task is disabled.
 		protected override void OnStop() {
