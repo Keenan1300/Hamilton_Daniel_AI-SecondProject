@@ -7,9 +7,9 @@ namespace NodeCanvas.Tasks.Conditions
 
     public class InRangeOfNestCT : ConditionTask
     {
-        public Transform Nest;
-        public Transform targetTransform;
-        public float rangeDistance;
+        private Transform Nest;
+        public BBParameter<Transform> targetTransform;
+        public BBParameter<float> rangeDistance;
        
 
 
@@ -17,6 +17,7 @@ namespace NodeCanvas.Tasks.Conditions
         //Return null if init was successfull. Return an error string otherwise
         protected override string OnInit()
         {
+            Transform nest = agent.transform;
             return null;
         }
 
@@ -36,9 +37,9 @@ namespace NodeCanvas.Tasks.Conditions
         //Return whether the condition is success or failure.
         protected override bool OnCheck()
         {
-            float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.position);
+            float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.value.position);
 
-            return distanceToTarget < rangeDistance;
+            return distanceToTarget < rangeDistance.value;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace NodeCanvas.Tasks.Actions
 
     public class MoveToPointAT : ActionTask
     {
-        public Transform targetPoint;
+        public BBParameter<Transform> targetPoint;
         public BBParameter<float> speed;
         public BBParameter<float> arrivalDistance;
 
@@ -43,10 +43,10 @@ namespace NodeCanvas.Tasks.Actions
             }
 
 
-            Vector3 directionToMove = targetPoint.position - agent.transform.position;
+            Vector3 directionToMove = targetPoint.value.position - agent.transform.position;
             agent.transform.position += directionToMove.normalized * speed.value * Time.deltaTime;
 
-            float distanceToTarget = Vector3.Distance(agent.transform.position, targetPoint.position);
+            float distanceToTarget = Vector3.Distance(agent.transform.position, targetPoint.value.position);
             if (distanceToTarget < arrivalDistance.value)
             {
                 EndAction(true);
