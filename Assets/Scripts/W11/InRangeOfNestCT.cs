@@ -24,13 +24,13 @@ namespace NodeCanvas.Tasks.Conditions
         //Called whenever the condition gets enabled.
         protected override void OnEnable()
         {
-
+            Debug.Log("Playerinrange!!");
         }
 
         //Called whenever the condition gets disabled.
         protected override void OnDisable()
         {
-
+            Debug.Log("Player out of range!!");
         }
 
         //Called once per frame while the condition is active.

@@ -156,7 +156,7 @@ public class Here : MonoBehaviour
                     float distanceToMouse = (lookPoint - transform.position).magnitude;
 
                     //bugfix
-                    print("Distance to mouse: " + distanceToMouse);
+                    //print("Distance to mouse: " + distanceToMouse);
 
                     //AutoExit Mode if player places cursor ontop of avatar
                     if (distanceToMouse < 3f)
@@ -197,7 +197,7 @@ public class Here : MonoBehaviour
         //Swap To MovementMode 2
         if (!equipped)
         {
-            print("mode2!!");
+            
 
 
             if (isGrounded && velocity.y < 0)
