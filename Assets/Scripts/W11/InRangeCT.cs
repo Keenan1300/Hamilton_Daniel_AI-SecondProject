@@ -38,7 +38,7 @@ namespace NodeCanvas.Tasks.Conditions
         {
             float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.position);
 
-            return distanceToTarget < rangeDistance;
+            return distanceToTarget <= rangeDistance;
         }
     }
 }

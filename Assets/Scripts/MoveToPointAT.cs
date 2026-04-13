@@ -35,12 +35,12 @@ namespace NodeCanvas.Tasks.Actions
         //Called once per frame while the action is active.
         protected override void OnUpdate()
         {
-            float distanceToEnemy = Vector3.Distance(agent.transform.position, enemyTransform.position);
-            if (distanceToEnemy < detectionDistance)
-            {
-                EndAction(false);
-                return;
-            }
+            //float distanceToEnemy = Vector3.Distance(agent.transform.position, enemyTransform.position);
+            //if (distanceToEnemy < detectionDistance)
+            //{
+                //EndAction(false);
+               // return;
+           // }
 
 
             Vector3 directionToMove = targetPoint.value.position - agent.transform.position;
@@ -50,6 +50,7 @@ namespace NodeCanvas.Tasks.Actions
             if (distanceToTarget < arrivalDistance.value)
             {
                 EndAction(true);
+                return;
             }
 
 
