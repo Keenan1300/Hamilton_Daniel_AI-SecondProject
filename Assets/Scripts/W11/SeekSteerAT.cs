@@ -32,16 +32,16 @@ namespace NodeCanvas.Tasks.Actions {
 		//Called once per frame while the action is active.
 		protected override void OnUpdate()
 		{
-            
-            movedirection.value += (TargetTransform.position - agent.transform.position).normalized * strength;
-            PosBoard.SetVariableValue("TargetPosition", targetposition.value);
+			
+            movedirection.value = (TargetTransform.position - agent.transform.position).normalized;
+            PosBoard.SetVariableValue("TargetPosition", movedirection.value);
 
         }
 
 		//Called when the task is disabled.
 		protected override void OnStop() {
-			
-		}
+			//movedirection.value = (TargetTransform.position - agent.transform.position).normalized;
+        }
 
 		//Called when the task is paused.
 		protected override void OnPause() {

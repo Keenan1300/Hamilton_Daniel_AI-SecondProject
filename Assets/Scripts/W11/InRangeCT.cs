@@ -9,6 +9,7 @@ namespace NodeCanvas.Tasks.Conditions
     {
 
         public Transform targetTransform;
+        public BBParameter<Transform> self;
         public float rangeDistance;
        
 
@@ -36,7 +37,8 @@ namespace NodeCanvas.Tasks.Conditions
         //Return whether the condition is success or failure.
         protected override bool OnCheck()
         {
-            float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.position);
+            float distanceToTarget = Vector3.Distance(self.value.transform.position, targetTransform.position);
+            //float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.position);
 
             return distanceToTarget <= rangeDistance;
         }

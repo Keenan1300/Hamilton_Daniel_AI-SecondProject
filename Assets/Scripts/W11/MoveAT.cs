@@ -12,11 +12,13 @@ namespace NodeCanvas.Tasks.Actions {
 		public BBParameter<float> MoveSpeed;
 		public float StoppingDistance;
         public BBParameter<Vector3> movedirection;
+        private Blackboard PosBoard;
 
         //Use for initialization. This is called only once in the lifetime of the task.
         //Return null if init was successfull. Return an error string otherwise
         protected override string OnInit() {
-			return null;
+            PosBoard = agent.GetComponent<Blackboard>();
+            return null;
 		}
 
 		//This is called once each time the task is enabled.
@@ -31,15 +33,21 @@ namespace NodeCanvas.Tasks.Actions {
 
 
 
-            Vector3 directionToMove = TargetPosition.value - agent.transform.position;
-           
+            //Vector3 directionToMove = TargetPosition.value - agent.transform.position;
+            Vector3 directionToMove = PosBoard.GetVariableValue<Vector3>("TargetPosition");
 
             float distancetoTarget = Vector3.Distance(agent.transform.position, TargetPosition.value);
-			if(distancetoTarget < StoppingDistance)
+			if(distancetoTarget >= StoppingDistance)
 			{
-                directionToMove = new Vector3(directionToMove.x, 0f, directionToMove.z);
-                agent.transform.position += directionToMove.normalized * MoveSpeed.value * Time.deltaTime;
-                movedirection.value = Vector3.zero;
+				//agent.transform.position += directionToMove.normalized * MoveSpeed.value * Time.deltaTime;
+
+				//Alter moving direction to turn towards target (player)
+				directionToMove = new Vector3(directionToMove.x, 0f, directionToMove.z);
+
+				//Turn towards player
+				agent.transform.position += directionToMove.normalized * MoveSpeed.value * Time.deltaTime;
+                //movedirection.value = directionToMove;
+				movedirection.value = Vector3.zero;
 
             }
         }

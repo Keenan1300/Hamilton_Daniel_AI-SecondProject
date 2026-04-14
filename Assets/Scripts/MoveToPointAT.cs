@@ -44,6 +44,9 @@ namespace NodeCanvas.Tasks.Actions
 
 
             Vector3 directionToMove = targetPoint.value.position - agent.transform.position;
+
+            //dont affect swarm height from ground
+            directionToMove = new Vector3(directionToMove.x, 0f, directionToMove.z);
             agent.transform.position += directionToMove.normalized * speed.value * Time.deltaTime;
 
             float distanceToTarget = Vector3.Distance(agent.transform.position, targetPoint.value.position);
