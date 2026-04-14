@@ -10,7 +10,7 @@ namespace NodeCanvas.Tasks.Conditions
 
         public Transform targetTransform;
         public BBParameter<Transform> self;
-        public float rangeDistance;
+        public BBParameter<float> rangeDistance;
        
 
 
@@ -40,7 +40,7 @@ namespace NodeCanvas.Tasks.Conditions
             float distanceToTarget = Vector3.Distance(self.value.transform.position, targetTransform.position);
             //float distanceToTarget = Vector3.Distance(agent.transform.position, targetTransform.position);
 
-            return distanceToTarget <= rangeDistance;
+            return distanceToTarget <= rangeDistance.value;
         }
     }
 }

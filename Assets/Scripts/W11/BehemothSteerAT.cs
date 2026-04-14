@@ -34,7 +34,7 @@ namespace NodeCanvas.Tasks.Actions {
         protected override void OnUpdate()
         {
 
-            movedirection.value += (TargetTransform.position - agent.transform.position).normalized;
+            movedirection.value = (TargetTransform.position - agent.transform.position).normalized;
             PosBoard.SetVariableValue("TargetPosition", movedirection.value);
 
         }
