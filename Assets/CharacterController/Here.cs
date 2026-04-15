@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class Here : MonoBehaviour
 {
+   
+
     //separate rotation from movement
     private Transform aimTarget;
     
@@ -54,6 +56,9 @@ public class Here : MonoBehaviour
 
     void Start()
     {
+       
+       
+
         //Animatorpart = Animatorinfo 
 
         //establish first move mode
@@ -79,6 +84,7 @@ public class Here : MonoBehaviour
 
     }
 
+    
     void Update()
     {
         //RunCoolDownTimer
