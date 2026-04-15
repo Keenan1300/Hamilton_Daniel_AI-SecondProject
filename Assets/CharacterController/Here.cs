@@ -7,7 +7,10 @@ using UnityEngine.Events;
 
 public class Here : MonoBehaviour
 {
-   
+    //Health Stats
+    public float Maxhealth;
+    public float health;
+
 
     //separate rotation from movement
     private Transform aimTarget;
@@ -56,8 +59,10 @@ public class Here : MonoBehaviour
 
     void Start()
     {
-       
-       
+
+        //set health
+        Maxhealth = 100f;
+        health = 100f;
 
         //Animatorpart = Animatorinfo 
 

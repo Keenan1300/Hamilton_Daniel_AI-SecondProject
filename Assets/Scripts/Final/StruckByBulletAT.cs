@@ -1,35 +1,21 @@
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
-using UnityEngine;
-using UnityEngine.Events;
 
 
 namespace NodeCanvas.Tasks.Actions {
 
+	public class StruckByBulletAT : ActionTask {
 
-	public class DamageAT : ActionTask {
-
-		public float Damage;
-		
-        public UnityEvent AttackPlayer;
-        public BBParameter<GameObject> healthB;
-
-        //Use for initialization. This is called only once in the lifetime of the task.
-        //Return null if init was successfull. Return an error string otherwise
-        protected override string OnInit() {
-            
-			
-            return null;
+		//Use for initialization. This is called only once in the lifetime of the task.
+		//Return null if init was successfull. Return an error string otherwise
+		protected override string OnInit() {
+			return null;
 		}
 
 		//This is called once each time the task is enabled.
 		//Call EndAction() to mark the action as finished, either in success or failure.
 		//EndAction can be called from anywhere.
 		protected override void OnExecute() {
-
-            HealthBar script = healthB.value.GetComponent<HealthBar>();
-            script.TakeDamage(Damage);
-            Debug.Log("Attacking");
 			EndAction(true);
 		}
 
