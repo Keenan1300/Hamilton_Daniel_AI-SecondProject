@@ -18,6 +18,7 @@ namespace NodeCanvas.Tasks.Conditions
         //Return null if init was successfull. Return an error string otherwise
         protected override string OnInit()
         {
+            float distanceToTarget = Vector3.Distance(self.value.transform.position, targetTransform.position);
             return null;
         }
 

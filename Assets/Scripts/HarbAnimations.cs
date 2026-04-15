@@ -76,7 +76,7 @@ public class HarbAnimations : MonoBehaviour
             x = Input.GetAxisRaw("Horizontal");
             anim.SetFloat("x", x);
             anim.SetFloat("y", y);
-            print("x value" + x);
+            //print("x value" + x);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -98,31 +98,31 @@ public class HarbAnimations : MonoBehaviour
             {
                 // Keep character pinned to the ground without sliding
                 //velocity.y = groundedGravity;
-                anim.SetBool("Idle", false);
+                //anim.SetBool("Idle", false);
                
                 anim.SetFloat("y", y);
                 
 
-                anim.SetBool("Run", true);
+                //anim.SetBool("Run", true);
             }
             else
             {
-                anim.SetBool("Run", false);
+                //anim.SetBool("Run", false);
             }
 
             if ((Input.GetKey(KeyCode.D)))
             {
                 // Keep character pinned to the ground without sliding
                 //velocity.y = groundedGravity;
-                anim.SetBool("Idle", false);
-                anim.SetBool("RightStrafe", true);
+                //anim.SetBool("Idle", false);
+                //anim.SetBool("RightStrafe", true);
                 
                     anim.SetFloat("x", x);
                 
             }
             else
             {
-                anim.SetBool("RightStrafe", false);
+                //anim.SetBool("RightStrafe", false);
                 
 
             }
@@ -131,13 +131,13 @@ public class HarbAnimations : MonoBehaviour
             {
                 // Keep character pinned to the ground without sliding
                 //velocity.y = groundedGravity;
-                anim.SetBool("Idle", false);
-                anim.SetBool("LeftStrafe", true);
+                //anim.SetBool("Idle", false);
+               // anim.SetBool("LeftStrafe", true);
                 anim.SetFloat("x", x);
             }
             else
             {
-                anim.SetBool("LeftStrafe", false);
+                //anim.SetBool("LeftStrafe", false);
                 
 
             }
@@ -146,13 +146,13 @@ public class HarbAnimations : MonoBehaviour
             {
                 // Keep character pinned to the ground without sliding
                 //velocity.y = groundedGravity;
-                anim.SetBool("Idle", false);
-                anim.SetBool("BackStep", true);
+                //anim.SetBool("Idle", false);
+               // anim.SetBool("BackStep", true);
                 anim.SetFloat("y", y);
             }
             else
             {
-                anim.SetBool("BackStep", false);
+                //anim.SetBool("BackStep", false);
                 
             }
 
