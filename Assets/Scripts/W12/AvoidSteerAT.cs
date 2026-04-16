@@ -38,8 +38,9 @@ namespace NodeCanvas.Tasks.Actions {
 			}
 			
 			totaldirection = totaldirection.normalized;
-			targetposition.value += totaldirection * strength;
-		}
+			targetposition.value += totaldirection;
+            //targetposition.value += totaldirection * strength;
+        }
 
 		//Called when the task is disabled.
 		protected override void OnStop() {
