@@ -92,6 +92,7 @@ public class Here : MonoBehaviour
     
     void Update()
     {
+        
         //RunCoolDownTimer
         if (cooldownTimer > 0)
         {
