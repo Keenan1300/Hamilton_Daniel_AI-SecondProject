@@ -9,7 +9,7 @@ namespace NodeCanvas.Tasks.Actions {
 	public class SeekSteerAT : ActionTask {
 
 		public BBParameter<Vector3> targetposition;
-		public Transform TargetTransform;
+		//public Transform TargetTransform;
 		private Blackboard PosBoard;
 		public BBParameter<Vector3> movedirection;
         public float strength;
@@ -33,7 +33,7 @@ namespace NodeCanvas.Tasks.Actions {
 		protected override void OnUpdate()
 		{
 			
-            movedirection.value = (TargetTransform.position - agent.transform.position).normalized;
+            movedirection.value = (targetposition.value - agent.transform.position).normalized;
             PosBoard.SetVariableValue("TargetPosition", movedirection.value);
 
         }

@@ -12,6 +12,7 @@ public class HealthBar : MonoBehaviour
     public RectTransform healthbar;
     public Blackboard bb;
     public GameObject deadUI;
+    public GameObject Player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,6 +37,8 @@ public class HealthBar : MonoBehaviour
         SetHealth(Health);
     }
 
+
+    //set health to update 
     public void SetHealth(float health)
     {
         Health = health;
@@ -46,12 +49,13 @@ public class HealthBar : MonoBehaviour
         if (Health <= 0)
         {
             deadUI.SetActive(true);
+            Player.SetActive(false);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+     
     }
 }
